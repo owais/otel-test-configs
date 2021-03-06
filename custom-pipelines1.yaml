@@ -1,0 +1,36 @@
+receivers:
+  jaeger:
+    protocols:
+      thrift_http:
+  hw: {}
+
+exporters:
+  logging: {}
+  jaeger:
+      endpoint: localhsot
+  opencensus:
+      endpoint: localhost:1111
+  hw: {}
+
+processors:
+  
+  batch: {}
+  hw: {}
+
+
+service:
+  pipelines:
+    traces:
+      receivers: [jaeger]
+      processors: [queued_retry, batch]
+      exporters: [jaeger, logging]
+
+    traces/duplicate:
+      receivers: [jaeger]
+      processors: [queued_retry, batch]
+      exporters: [jaeger, opencensus, logging]
+
+    helloworld:
+        receivers: [hw]
+        processors: [hw]
+        exporters: [hw]

@@ -1,0 +1,18 @@
+receivers:
+  jaeger: {}
+exporters:
+  logging: {}
+  #opencensus:
+  #  endpoint: "127.0.0.1:55678"
+
+processors:
+  queued-retry: {}
+  batch: {}
+  #probabilistic-sampler:
+  #disabled: true
+
+pipelines:
+  traces:
+    receivers: [jaeger]
+    processors: [queued-retry, batch]
+    exporters: [logging]

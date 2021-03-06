@@ -1,0 +1,29 @@
+extensions:
+  health-check: {}
+receivers:
+  zipkin: {} 
+  jaeger: {}
+  opencensus: {}
+exporters:
+  zipkin: {}
+  debug: {}
+  opencensus:
+    endpoint: "127.0.0.1:55678"
+
+processors:
+  kubernetes:
+    disabled: true
+  attributes: {} 
+  queued-retry: {}
+  batch: {}
+  #probabilistic-sampler:
+  #disabled: true
+
+pipelines:
+  traces:
+    receivers: [jaeger, zipkin, opencensus]
+    processors: [kubernetes, batch]
+    exporters: [debug]
+
+service:
+  extensions: [health-check]

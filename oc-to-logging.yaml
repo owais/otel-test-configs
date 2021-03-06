@@ -1,0 +1,20 @@
+extensions:
+  health_check: {}
+
+receivers:
+  opencensus: {}
+
+exporters:
+  logging: {}
+
+processors:
+  
+  batch: {}
+
+
+service:
+  pipelines:
+    traces:
+      receivers: [opencensus]
+      processors: [batch]
+      exporters: [logging]

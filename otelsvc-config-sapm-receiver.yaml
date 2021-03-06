@@ -1,0 +1,32 @@
+extensions:
+  health_check: {}
+
+receivers:
+  sapm: {}
+
+exporters:
+  logging: {}
+  #signalfx:
+  #  auth_token: "N6Ffwg0u2t07U_vGYoi7kQ"
+  #  realm: "us1"
+  #signalfx:
+  #  auth_token: "N6Ffwg0u2t07U_vGYoi7kQ"
+  #  realm: "us1"
+  # prometheus:
+  #  endpoint: "127.0.0.1:5555"
+  # opencensus:
+  #  endpoint: "127.0.0.1:55678"
+
+processors:
+  
+  # batch: {}
+  #probabilistic_sampler:
+
+
+service:
+  # extensions: [health_check]
+  pipelines:
+    traces:
+      receivers: [sapm]
+      processors: [queued_retry]
+      exporters: [logging]

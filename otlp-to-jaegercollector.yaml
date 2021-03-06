@@ -1,0 +1,18 @@
+receivers:
+  otlp:
+    endpoint: "0.0.0.0:55680"
+  opencensus: {}
+
+exporters:
+  logging:
+    loglevel: debug
+  zipkin:
+    url: "http://localhost:9411/api/v2/spans"
+  file:
+    path: ./local/received_spans.json
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp, opencensus]
+      exporters: [logging, zipkin]

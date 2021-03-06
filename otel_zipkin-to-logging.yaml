@@ -1,0 +1,22 @@
+receivers:
+  zipkin:
+    endpoint: localhost:9411
+
+  otlp:
+    protocols:
+        grpc:
+            # endpoint: localhost:5555
+
+exporters:
+  logging:
+      loglevel: debug
+
+processors:
+
+
+service:
+  pipelines:
+    traces:
+      receivers: [zipkin, otlp]
+      processors: []
+      exporters: [logging]

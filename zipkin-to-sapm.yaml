@@ -1,0 +1,22 @@
+extensions:
+  health_check: {}
+
+receivers:
+  zipkin:
+    endpoint: localhost:9411
+
+exporters:
+  sapm:
+      endpoint: http://localhost:7276/v2/trace
+
+processors:
+  
+  batch: {}
+
+
+service:
+  pipelines:
+    traces:
+      receivers: [zipkin]
+      processors: [batch]
+      exporters: [sapm]

@@ -1,0 +1,24 @@
+receivers:
+  zipkin: {} 
+  jaeger: {}
+  opencensus: {}
+exporters:
+  kinesis:
+    aws:
+      stream_name: in_dev_test_tenant
+      kinesis_endpoint: http://localhost:4567
+
+  # opencensus:
+  #  endpoint: "127.0.0.1:55678"
+
+processors:
+  batch: {}
+  #probabilistic-sampler:
+  #disabled: true
+
+service:
+    pipelines:
+      traces:
+        receivers: [jaeger, zipkin, opencensus]
+        processors: [batch]
+        exporters: [kinesis]

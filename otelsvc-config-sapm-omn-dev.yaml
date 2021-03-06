@@ -1,0 +1,38 @@
+extensions:
+  health_check: {}
+
+receivers:
+  opencensus: {}
+  jaeger: {}
+  zipkin: {}
+
+exporters:
+  # logging: {}
+  sapm:
+    endpoint: "https://ingest.dev.omnition.io/v2/trace"
+    access_token: "AABEDAFA-8013-4328-AD9E-0C5780B2B606"
+    # max_retries: 5
+  #signalfx:
+  #  auth_token: "N6Ffwg0u2t07U_vGYoi7kQ"
+  #  realm: "us1"
+  #signalfx:
+  #  auth_token: "N6Ffwg0u2t07U_vGYoi7kQ"
+  #  realm: "us1"
+  # prometheus:
+  #  endpoint: "127.0.0.1:5555"
+  # opencensus:
+  #  endpoint: "127.0.0.1:55678"
+
+processors:
+  
+  batch: {}
+  #probabilistic_sampler:
+
+
+service:
+  # extensions: [health_check]
+  pipelines:
+    traces:
+      receivers: [jaeger, opencensus, zipkin]
+      processors: [batch]
+      exporters: [sapm]

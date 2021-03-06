@@ -1,0 +1,28 @@
+extensions:
+  health_check: {}
+receivers:
+  memorymonitor:
+    scrape_interval: 5s
+exporters:
+  signalfx:
+      auth_token: "N6Ffwg0u2t07U_vGYoi7kQ"
+      realm: "us1"
+
+  # logging: {}
+  # prometheus:
+  #  endpoint: "127.0.0.1:5555"
+  # opencensus:
+  #  endpoint: "127.0.0.1:55678"
+
+processors: {}
+  #queued-retry: {}
+  #batch: {}
+  #probabilistic-sampler:
+
+
+service:
+  # extensions: [health_check]
+  pipelines:
+    metrics:
+      receivers: [memorymonitor]
+      exporters: [signalfx]

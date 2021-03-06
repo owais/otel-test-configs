@@ -1,0 +1,18 @@
+receivers:
+  signalfx:
+    endpoint: localhost:8080
+
+exporters:
+  prometheus: 
+    endpoint: localhost:5555
+  logging: {}
+
+processors:
+
+
+service:
+  pipelines:
+    metrics:
+      receivers: [signalfx]
+      processors: []
+      exporters: [logging, prometheus]

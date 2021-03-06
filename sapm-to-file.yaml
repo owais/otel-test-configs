@@ -1,0 +1,22 @@
+extensions:
+  health_check: {}
+
+receivers:
+  sapm: {}
+
+exporters:
+  logging: {}
+  file:
+      path: ./local/received_spans.json
+
+processors:
+  
+  batch: {}
+
+
+service:
+  pipelines:
+    traces:
+      receivers: [sapm]
+      processors: [batch]
+      exporters: [file]

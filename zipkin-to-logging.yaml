@@ -1,0 +1,17 @@
+receivers:
+  zipkin:
+    endpoint: localhost:9411
+
+exporters:
+  logging:
+      loglevel: debug
+
+processors:
+
+
+service:
+  pipelines:
+    traces:
+      receivers: [zipkin]
+      processors: []
+      exporters: [logging]

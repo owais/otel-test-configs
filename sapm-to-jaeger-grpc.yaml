@@ -1,0 +1,20 @@
+receivers:
+  sapm: {}
+exporters:
+  file:
+    path: ./local/received_spans.json
+  jaeger_grpc:
+    endpoint: "http://127.0.0.1:14250"
+  zipkin:
+    url: "http://localhost:9412/api/v2/spans"
+
+processors:
+  
+  batch: {}
+
+service:
+  pipelines:
+    traces:
+      receivers: [sapm]
+      processors: [batch]
+      exporters: [zipkin, file]

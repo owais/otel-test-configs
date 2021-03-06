@@ -1,0 +1,16 @@
+receivers:
+  collectd: {}
+
+exporters:
+  logging: {}
+
+processors:
+  batch: {}
+
+
+service:
+  pipelines:
+    metrics:
+      receivers: [collectd]
+      processors: []
+      exporters: [logging]

@@ -1,0 +1,22 @@
+extensions:
+  health_check: {}
+
+receivers:
+  jaeger:
+    protocols:
+      thrift_http:
+
+exporters:
+  logging:
+      loglevel: debug
+
+processors:
+  batch: {}
+
+
+service:
+  pipelines:
+    traces:
+      receivers: [jaeger]
+      processors: [batch]
+      exporters: [logging]

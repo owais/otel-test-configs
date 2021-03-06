@@ -1,0 +1,58 @@
+extensions:
+  health-check: {}
+receivers:
+  zipkin: {} 
+  jaeger: {}
+  opencensus: {}
+exporters:
+  logging: {}
+  # opencensus:
+  #  endpoint: "127.0.0.1:55678"
+
+processors:
+  k8s_tagger:
+    extract:
+      metadata:
+        - podName
+        - deployment
+        - cluster
+        - namespace
+        - node
+        - startTime
+    filter:
+      #namespace: test-owais-k8s
+      _node: ip-172-20-185-226.us-west-2.compute.internal
+      #node_from_env_var: K8S_NODE 
+      _labels:
+        - key: app 
+          value: oc-demo1
+        - key: component 
+          value: random
+          op: not-equals
+      _fields:
+        - key: field1
+          value: aaa
+        - key: field2
+          value: bbbb
+          op: not-equals
+      llabels:
+        - key: component
+          value: oc-demo
+          op: not-equals
+      fields2:
+        - key: metadata.name
+          value: oc-demo1
+          
+  queued-retry: {}
+  batch: {}
+  #probabilistic-sampler:
+  #disabled: true
+
+pipelines:
+  traces:
+    receivers: [jaeger, zipkin, opencensus]
+    processors: [k8s_tagger, batch]
+    exporters: [logging]
+
+service:
+  extensions: [health-check]

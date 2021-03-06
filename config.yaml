@@ -1,0 +1,53 @@
+extensions:
+    zpages:
+        endpoint: "0.0.0.0:55679"
+
+receivers:
+  sapm:
+    endpoint: "0.0.0.0:7276"
+  zipkin:
+    endpoint: "0.0.0.0:9411"
+  jaeger:
+    protocols:
+      grpc:
+      thrift_http:
+      thrift_compact:
+      thrift_binary:
+
+exporters:
+  logging:
+    loglevel: debug
+  #zipkin:
+  #  url: "http://localhost:9412/api/v2/spans"
+  #sapm:
+  #  endpoint: "http://127.0.0.1:7276/v2/trace"
+  #  max_retries: 5
+  #signalfx:
+  #  auth_token: "N6Ffwg0u2t07U_vGYoi7kQ"
+  #  realm: "us1"
+  #signalfx:
+  #  auth_token: "N6Ffwg0u2t07U_vGYoi7kQ"
+  #  realm: "us1"
+  # prometheus:
+  #  endpoint: "127.0.0.1:5555"
+  # opencensus:
+  #  endpoint: "127.0.0.1:55678"
+
+processors:
+  
+  batch: {}
+  #k8s_tagger:
+  #   auth_type: kubeConfig
+
+  # batch: {}
+  #probabilistic_sampler:
+
+
+service:
+  # extensions: [health_check]
+  extensions: [zpages]
+  pipelines:
+    traces:
+      receivers: [zipkin, jaeger, sapm]
+      processors: [batch]
+      exporters: [logging]

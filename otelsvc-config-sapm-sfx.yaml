@@ -1,0 +1,24 @@
+extensions:
+  health_check: {}
+
+receivers:
+  opencensus: {}
+  jaeger: {}
+  zipkin: {}
+
+exporters:
+  sapm:
+    endpoint: "http://lab-ingest.corp.signalfuse.com:8080/v2/trace"
+    access_token: "CgloneIlnVWtWB9N8cdkvA"
+
+processors:
+  
+  batch: {}
+
+
+service:
+  pipelines:
+    traces:
+      receivers: [jaeger, opencensus, zipkin]
+      processors: [batch]
+      exporters: [sapm]

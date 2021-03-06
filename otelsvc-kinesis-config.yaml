@@ -1,0 +1,38 @@
+receivers:
+  # zipkin: {}
+  opencensus: 
+    backpressure: true
+    num-workers: 12
+    max-server-streams: 100
+
+  opencensus/second: 
+    backpressure: false
+    max-server-streams: 100
+
+exporters:
+  kinesis:
+    disabled: true
+    aws:
+        stream-name: test-stream
+        kinesis-endpoint: http://localhost:4567
+        region: us-west-2
+        role-arn: arn:aws:iam::592865182265:role/development-svc-opencensus
+    kpl:
+        aggregate-batch-size: 300000
+        batch-size: 972800
+        flush-interval: 10
+        max-retries: 20
+        max-backoff-seconds: 120
+        max-span-list-size: 102400
+        span-list-flush-interval: 5
+
+processors:
+  add-attributes: {}
+  queued-retry: {}
+  batch: {}
+
+pipelines:
+  traces:
+    receivers: [opencensus]
+    processors: [add-attributes, batch, queued-retry]
+    exporters: [kinesis]

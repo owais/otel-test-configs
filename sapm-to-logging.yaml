@@ -1,0 +1,21 @@
+extensions:
+  health_check: {}
+
+receivers:
+  sapm: {}
+
+exporters:
+  logging:
+      loglevel: debug
+
+processors:
+  
+  batch: {}
+
+
+service:
+  pipelines:
+    traces:
+      receivers: [sapm]
+      processors: [batch]
+      exporters: [logging]

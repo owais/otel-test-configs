@@ -1,0 +1,22 @@
+receivers:
+  zipkin: {} 
+  #jaeger: {}
+  # opencensus: {}
+exporters:
+  logging: {}
+  jaeger_thrift_http:
+    url: "http://localhost:14250/v1/trace"
+  #opencensus:
+  #  endpoint: "127.0.0.1:55678"
+
+processors:
+  batch: {}
+  #probabilistic-sampler:
+  #disabled: true
+
+service:
+  pipelines:
+    traces:
+      receivers: [zipkin]
+      processors: [batch]
+      exporters: [jaeger_thrift_http, logging]

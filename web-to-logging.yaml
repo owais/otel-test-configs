@@ -1,0 +1,15 @@
+receivers:
+  otlp:
+    endpoint: "0.0.0.0:55680"
+  opencensus: 
+    endpoint: "0.0.0.0:55678"
+
+exporters:
+  logging: {}
+
+
+service:
+  pipelines:
+    traces:
+      receivers: [opencensus, otlp]
+      exporters: [logging]

@@ -1,0 +1,27 @@
+receivers:
+  zipkin: {} 
+  jaeger: {}
+  opencensus: {}
+exporters:
+  logging: {}
+  logging2: {}
+  kinesis: {}
+  # opencensus:
+  #  endpoint: "127.0.0.1:55678"
+
+processors:
+  kubernetes:
+    extract:
+      metadata:
+        - podName
+  add-attributes: {} 
+  queued-retry: {}
+  batch: {}
+  #probabilistic-sampler:
+  #disabled: true
+
+pipelines:
+  traces:
+    receivers: [jaeger, zipkin, opencensus]
+    processors: [kubernetes, add-attributes, batch]
+    exporters: [kinesis]

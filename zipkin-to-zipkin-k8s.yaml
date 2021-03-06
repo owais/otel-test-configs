@@ -1,0 +1,41 @@
+receivers:
+  zipkin:
+    endpoint: "localhost:9411"
+
+exporters:
+  logging:
+    # loglevel: debug
+  zipkin:
+    url: "http://localhost:9412/api/v2/spans"
+  #sapm:
+  #  endpoint: "http://127.0.0.1:7276/v2/trace"
+  #  max_retries: 5
+  #signalfx:
+  #  auth_token: "N6Ffwg0u2t07U_vGYoi7kQ"
+  #  realm: "us1"
+  #signalfx:
+  #  auth_token: "N6Ffwg0u2t07U_vGYoi7kQ"
+  #  realm: "us1"
+  # prometheus:
+  #  endpoint: "127.0.0.1:5555"
+  # opencensus:
+  #  endpoint: "127.0.0.1:55678"
+
+processors:
+  
+  batch: {}
+  k8s_tagger:
+    enabled: true
+    auth_type: kubeConfig
+
+  # batch: {}
+  #probabilistic_sampler:
+
+
+service:
+  # extensions: [health_check]
+  pipelines:
+    traces:
+      receivers: [zipkin]
+      processors: [k8s_tagger, batch]
+      exporters: [logging, zipkin]

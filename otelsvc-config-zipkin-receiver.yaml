@@ -1,0 +1,49 @@
+extensions:
+  health_check: {}
+
+receivers:
+  zipkin:
+    endpoint: localhost:9412
+
+exporters:
+  logging: {}
+  #signalfx:
+  #  auth_token: "N6Ffwg0u2t07U_vGYoi7kQ"
+  #  realm: "us1"
+  # prometheus:
+  #  endpoint: "127.0.0.1:5555"
+  # opencensus:
+  #  endpoint: "127.0.0.1:55678"
+  opencensus/owais:
+    endpoint: "ingest.dev.omnition.io:443"
+    compression: "gzip"
+    num_workers: 8
+    reconnection_delay: 2s
+    secure: true
+    unary_exporter: true
+    headers: {"x-omnition-api-key":"AABEDAFA-8013-4328-AD9E-0C5780B2B606"}
+
+
+  opencensus/tenant-d:
+    endpoint: "ingest.dev.omnition.io:443"
+    compression: "gzip"
+    num_workers: 8
+    reconnection_delay: 2s
+    secure: true
+    unary_exporter: true
+    headers: {"x-omnition-api-key":"00E2C6F9-26D1-42C6-9D20-C9D3BAE74AFE"}
+
+
+processors:
+  #queued-retry: {}
+  batch: {}
+  #probabilistic-sampler:
+
+
+service:
+  # extensions: [health_check]
+  pipelines:
+    traces:
+      receivers: [zipkin]
+      processors: [batch]
+      exporters: [opencensus/owais, logging]

@@ -1,0 +1,25 @@
+receivers:
+  opencensus:
+    backpressure: true
+    max-recv-msg-size-mib: 100
+    max-concurrent-streams: 0
+    keepalive:
+      server-parameters:
+        max-connection-age: 120s
+        max-connection-age-grace: 30s
+exporters:
+  opencensus:
+    endpoint: "locahost:55678"
+    unary-exporter: false
+
+processors:
+  add-attributes: {}
+  queued-retry: {}
+  batch: {}
+  # kubernetes: {}
+
+pipelines:
+  traces:
+    receivers: [opencensus]
+    processors: [add-attributes, batch, queued-retry]
+    exporters: [opencensus]

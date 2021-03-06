@@ -1,0 +1,23 @@
+extensions:
+  health_check: {}
+
+receivers:
+  sapm: {}
+
+exporters:
+  file:
+    path: ./local/received_spans.json
+  zipkin:
+    url: "http://localhost:9412"
+
+processors:
+  
+  batch: {}
+
+
+service:
+  pipelines:
+    traces:
+      receivers: [sapm]
+      processors: [batch]
+      exporters: [zipkin, file]

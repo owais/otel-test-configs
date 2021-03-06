@@ -1,0 +1,26 @@
+extensions:
+  health_check: {}
+
+receivers:
+  zipkin:
+    endpoint: localhost:9411
+  otlp:
+    protocols:
+        grpc:
+            # endpoint: localhost:5555
+
+exporters:
+  logging:
+      loglevel: debug
+
+processors:
+  
+  batch: {}
+
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp, zipkin]
+      processors: [batch]
+      exporters: [logging]
